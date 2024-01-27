@@ -104,8 +104,18 @@ namespace ufl_cap4053 { namespace fundamentals {
 			
 			removebyit(at);
 		}
+		// not asked for, but useful for when used by treenodes
+		T remove_at(size_t index, bool also_free = true) {
+			Iterator at = begin();
+			for (int i = 0; i < index; i++) {
+				++at;
+			}
+			T ret = *at;
+			removebyit(at, also_free);
+			return ret;
+		}
 		// the aforementioned true removal function
-		void removebyit(Iterator at) {
+		void removebyit(Iterator at, bool also_free = true) {
 			// easy escape case
 			if (at == nullptr) { return; }
 
@@ -124,7 +134,8 @@ namespace ufl_cap4053 { namespace fundamentals {
 				at.curr->next->prev = at.curr->prev;
 			}
 
-			delete at.curr;
+			if (also_free)
+				delete at.curr;
 		}
 
 		//void printState() {
